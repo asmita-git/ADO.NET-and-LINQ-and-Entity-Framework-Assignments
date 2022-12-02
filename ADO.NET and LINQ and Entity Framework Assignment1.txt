@@ -1,0 +1,88 @@
+Created Table
+FootBallLeague (MatchID (PK), TeamName1, TeamName2, Status, WinningTeam, Points)
+
+Status should be either “Win” or “Draw”
+
+
+
+create database FootBall
+
+Use [FootBall]
+GO
+
+SET ANSI_NULL ON
+ GO
+
+ SET QUOTED_IDENTIFIER ON
+GO
+
+  CREATE  TABLE [dbo].[FootBallLeague]
+  ([MatchID] [int] NOT NULL,
+  [TeamName1] [nvarchar](50) NOT NULL,
+  [TeamName2] [nvarchar](50) NOT NULL,
+  [Status] [nvarchar](50) NOT NULL,
+  [WinningTeam] [nvarchar](50) NOT NULL,
+  [Points] [int] NOT NULL,
+  CONSTRAINT [PK_FootBallLeague] PRIMARY KEY CLUSTERED
+  (
+  [MatchID] ASC
+  )
+  WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+  )
+  ON [PRIMARY]
+  GO
+
+
+INSERT DATA:
+INSERT INTO FootBallLeague (MatchID,TeamName1,TeamName2,Status,WinningTeam,Points) VALUES( 1001,'USA ‘, ’Russia','Win', 'Russia', 4);
+
+Create a stored procedure to insert the records in FootBallLeague table.
+
+CREATE PROCEDURE InsertFootBallLeague
+			@MatchID int,
+           @TeamName1 nvarchar(50),
+      @TeamName2 nvarchar(50),
+      @Status nvarchar(50),
+      @WinningTeam nvarchar(50),
+      @Points int
+	  As
+	  BEGIN
+	   SET NOCOUNT ON;
+	    INSERT INTO FootBallLeague (MatchID,TeamName1,TeamName2,Status,WinningTeam,Points)  VALUES(@MatchID,  @TeamName1 , @TeamName2,@Status,@WinningTeam,  @Points)
+		END	
+
+
+
+Exec Proce:
+
+USE [FootBall]
+GO
+
+DECLARE	@return_value int
+
+EXEC	@return_value = [dbo].[InsertFootBallLeague]
+		@MatchID = 1009,
+		@TeamName1 = N'USA ',
+		@TeamName2 = N'Russia',
+		@Status = N'Win',
+		@WinningTeam = N'Russia',
+		@Points = 4
+
+SELECT	'Return Value' = @return_value
+
+GO
+
+
+
+A)	Retrieve all the winning TeamNames.
+	
+SELECT WinningTeam FROM FootBallLeague WHERE Status='Win';
+
+  SELECT * FROM FootBallLeague WHERE Status='Win';
+
+
+c)	Retrieve the details of all matches in which Japan played
+
+
+SELECT  * From FootBallLeague  WHERE TeamName1='Japan' OR TeamName2 ='Japan';
+
